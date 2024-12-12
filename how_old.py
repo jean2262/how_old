@@ -1,5 +1,6 @@
-from datetime import datetime, date
+from datetime import date
 import argparse
+import matplotlib.pyplot as plt
 
 def how_old_am_i(year_of_birth: int, month_of_birth: int = 1, day_of_birth: int = 1) -> int:
     """
@@ -19,6 +20,21 @@ def how_old_am_i(year_of_birth: int, month_of_birth: int = 1, day_of_birth: int 
         birthday = date(year_of_birth, month_of_birth, day_of_birth)
         age = today.year - birthday.year - ((today.month, today.day) < (birthday.month, birthday.day))
         print(f"You are {age} years old")
+        
+        if (today.month, today.day) == (birthday.month, birthday.day):
+            print("Happy Birthday!")
+        
+        days_until_next_birthday = (birthday.replace(year=today.year + (today >= birthday)) - today).days
+        print(f"Days until your next birthday: {days_until_next_birthday}")
+
+        years = list(range(year_of_birth, today.year + 2))
+        ages = [today.year - year for year in years]
+        plt.plot(years, ages)
+        plt.xlabel('Year')
+        plt.ylabel('Age')
+        plt.title('Age Over Time')
+        plt.show()
+        
         return age
     except ValueError as e:
         print(f"Invalid date: {e}")
